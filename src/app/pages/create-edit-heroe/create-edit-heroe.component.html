@@ -1,0 +1,77 @@
+<div class="firstBox">
+  <div class="dataBox">
+    <h2>{{ title }} Hero</h2>
+    @if (!isCreate) {
+    <img alt="hero photo" [src]="image" class="fixed-size-image" />
+    }
+    <form [formGroup]="heroesForm" class="form">
+      <mat-form-field>
+        <mat-label>Name:</mat-label>
+        <input matInput formControlName="name" />
+        @if (heroesForm.get('name')?.hasError('required')) {
+        <mat-error>Name is required</mat-error>
+        } @if (heroesForm.get('name')?.hasError('maxlenght')) {
+        <mat-error>Maximum length exceeded</mat-error>
+        } @if (heroesForm.get('name')?.hasError('pattern')) {
+        <mat-error>Invalid characters entered</mat-error>
+        } @if (heroesForm.get('name')?.hasError('firstLetterUppercase')) {
+        <mat-error>First letter must be uppercase</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Alias:</mat-label>
+        <input matInput formControlName="alias" />
+        @if (heroesForm.get('alias')?.hasError('required')) {
+        <mat-error>Alias is required</mat-error>
+        } @if (heroesForm.get('alias')?.hasError('maxlenght')) {
+        <mat-error>Maximum length exceeded</mat-error>
+        } @if (heroesForm.get('alias')?.hasError('pattern')) {
+        <mat-error>Invalid characters entered</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Power:</mat-label>
+        <input matInput formControlName="power" />
+        @if (heroesForm.get('power')?.hasError('required')) {
+        <mat-error>Power is required</mat-error>
+        } @if (heroesForm.get('power')?.hasError('maxlenght')) {
+        <mat-error>Maximum length exceeded</mat-error>
+        } @if (heroesForm.get('power')?.hasError('pattern')) {
+        <mat-error>Invalid characters entered</mat-error>
+        }
+      </mat-form-field>
+      <mat-label class="text-photo">Photo:</mat-label>
+      <button
+        type="button"
+        class="choose-file"
+        mat-raised-button
+        (click)="fileInput.click()"
+      >
+        Choose File
+      </button>
+      <input
+        hidden
+        (change)="onFileSelected($event)"
+        #fileInput
+        type="file"
+        accept=".png, .jpg, .jpeg"
+      />
+      @if (!this.image) {
+      <mat-error>You must choose a image</mat-error>
+      }
+    </form>
+  </div>
+</div>
+<div class="button-box">
+  <button class="cancel-button" mat-button mat-dialog-close (click)="cancel()">
+    Cancel
+  </button>
+  <button
+    class="accept-button"
+    mat-button
+    cdkFocusInitial
+    (click)="submitForm()"
+  >
+    Accept
+  </button>
+</div>

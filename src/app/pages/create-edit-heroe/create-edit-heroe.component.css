@@ -1,0 +1,53 @@
+.firstBox {
+    display: flex;
+    flex: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.dataBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-box {
+    margin-top: 1%;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.fixed-size-image {
+    height: 200px;
+    margin-bottom: 8%;
+}
+
+.text-photo {
+    color: white;
+}
+
+h2 {
+    color: white;
+}
+
+.choose-file {
+    margin-bottom: 8%;
+}
+
+.accept-button {
+    margin-left: 1%;
+    background-color: #F2C73F;
+}
+
+.cancel-button {
+    background-color: #F2C73F;
+}
+

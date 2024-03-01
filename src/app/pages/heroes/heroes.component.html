@@ -1,0 +1,58 @@
+<div class="main-box">
+  <div class="container-search">
+    <div class="search-box">
+      <button
+        aria-label="Create new hero"
+        mat-raised-button
+        class="add-button"
+        type="submit"
+        (click)="createOrEditHero(true)"
+      >
+        +
+      </button>
+      <mat-form-field class="example-full-width">
+        <mat-label>Search hero...</mat-label>
+        <input (keyup)="search($event)" matInput type="text" #searchInput />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="container">
+    @if (isLoading) {
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+    } @else { @for (heroe of heroes; track heroe.id) {
+    <mat-card class="card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{ heroe.name }}</mat-card-title>
+        <mat-card-subtitle>{{ heroe.alias }}</mat-card-subtitle>
+      </mat-card-header>
+      <img class="heroe-photo" mat-card-image [src]="heroe?.image" />
+      <mat-card-content>
+      </mat-card-content>
+      <div class="button-box">
+        <button
+          class="action-button"
+          (click)="createOrEditHero(false, heroe?.id)"
+          mat-button
+        >
+          <mat-icon class="icon">create</mat-icon>
+          Edit
+        </button>
+        <button
+          class="action-button"
+          mat-button
+          (click)="deleteHeroe(heroe?.id)"
+        >
+          <mat-icon class="icon">delete</mat-icon>
+          Delete
+        </button>
+      </div>
+    </mat-card>
+    }@empty {
+    <span>No results found...</span>
+    } }
+  </div>
+</div>
