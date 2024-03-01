@@ -45,7 +45,7 @@ export class HeroesComponent {
     //To simulate the time it takes for a call to respond.
     setTimeout(() => {
       this.isLoading = false;
-    }, 1000);
+    }, 300);
   }
 
 
