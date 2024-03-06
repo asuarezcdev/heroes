@@ -37,7 +37,7 @@ export class HeroesComponent {
   }
 
   loadData(): void {
-    this.heroesService.getHeroesFromLocalStorage();
+    this.heroesService.getHeroes();
     this.heroesService.heroes$.subscribe((res: Hero[]) => {
       this.heroes = res;
       this.originalHeroesList = res;

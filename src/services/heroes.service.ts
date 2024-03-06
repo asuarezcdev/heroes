@@ -1,14 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Hero } from '../app/types/heroes';
 import { her } from './heroes';
-
+import { Firestore, collection, collectionData, getDoc } from '@angular/fire/firestore';
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 @Injectable({
   providedIn: 'root'
 })
 export class HeroesService {
 
+  item$!: Observable<any[]>;
+  firestore: Firestore = inject(Firestore);
   public heroes = new BehaviorSubject<Hero[]>([]);
   heroes$ = this.heroes.asObservable();
   private isLoading = new BehaviorSubject<boolean>(true);
@@ -17,6 +20,24 @@ export class HeroesService {
   constructor(private http: HttpClient) {
 
   }
+
+
+
+  // getHeroes(): void {
+  //return this.http.get('');
+  //}
+
+
+  getHeroes(): void {
+    const itemCollection = collection(this.firestore, 'heroes');
+    collectionData(itemCollection).pipe(
+      map((heroes: any[]) => heroes.map(hero => hero as Hero))
+    ).subscribe(heroesArray => {
+      console.log('items', heroesArray);
+      this.heroes.next(heroesArray);
+    });
+  }
+
 
   getHeroesFromLocalStorage(): void {
     let storedHeroesList = localStorage.getItem('heroesList');
@@ -28,29 +49,43 @@ export class HeroesService {
   }
 
 
+
+
   updateHeroesList(heroes: Hero[]): void {
     this.heroes.next(heroes);
     localStorage.setItem('heroesList', JSON.stringify(heroes));
   }
 
-  editHero(heroeToModify: Hero) {
-    this.heroesList = this.getStoredHeroesList();
-    const updatedHeroes = this.heroesList.map(hero => hero.id === heroeToModify.id ? heroeToModify : hero);
-    this.updateAndStoreHeroes(updatedHeroes);
+  async editHero(heroToModify: Hero) {
+    //    this.heroesList = this.getStoredHeroesList();
+    //const updatedHeroes = this.heroesList.map(hero => hero.id === heroeToModify.id ? heroeToModify : hero);
+    //this.updateAndStoreHeroes(updatedHeroes);
+    const itemCollection = collection(this.firestore, 'heroes');
+    await setDoc(doc(itemCollection, heroToModify.id),
+      heroToModify
+    );
   }
 
-  deleteHero(heroId: string | undefined) {
-    this.heroesList = this.getStoredHeroesList();
-    const updatedHeroes = this.heroesList.filter(hero => hero.id !== heroId);
-    this.updateAndStoreHeroes(updatedHeroes);
+  async deleteHero(heroId: string | undefined) {
+    //   this.heroesList = this.getStoredHeroesList();
+    //const updatedHeroes = this.heroesList.filter(hero => hero.id !== heroId);
+    //this.updateAndStoreHeroes(updatedHeroes);
+    const itemCollection = collection(this.firestore, 'heroes');
+    await deleteDoc(doc(itemCollection, heroId));
   }
 
 
-  createHero(newHeroe: Hero) {
-    this.heroesList = this.getStoredHeroesList();
-    const newHeroeWithId = { ...newHeroe, id: (Math.floor(Math.random() * 1000) + 1).toString() };
-    const updatedHeroes = [...this.heroesList, newHeroeWithId];
-    this.updateAndStoreHeroes(updatedHeroes);
+  async createHero(newHero: Hero) {
+    //  this.heroesList = this.getStoredHeroesList();
+    // const newHeroeWithId = { ...newHeroe, id: (Math.floor(Math.random() * 1000) + 1).toString() };
+    //const updatedHeroes = [...this.heroesList, newHeroeWithId];
+    //this.updateAndStoreHeroes(updatedHeroes);
+    const newId = (Math.floor(Math.random() * 1000) + 1).toString();
+    newHero.id = newId;
+    const itemCollection = collection(this.firestore, 'heroes');
+    await setDoc(doc(itemCollection, newId),
+      newHero
+    );
   }
 
   getStoredHeroesList(): Hero[] {
@@ -63,10 +98,40 @@ export class HeroesService {
     this.updateHeroesList(heroes);
   }
 
-  findHeroById(id: string) {
-    const selectedHero = this.heroesList.find((hero: { id: string; }) => hero.id === id);
-    return selectedHero;
+  async findHeroById(id: string) {
+    const itemCollection = collection(this.firestore, 'heroes');
+    const docRef = doc(itemCollection, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      console.log(typeof (docSnap.data()));
+    } else {
+      console.log("No such document!");
+    }
+    const hero: Hero = docSnap.data() as Hero;
+    return hero;
   }
+
+
+  //  findHeroById_(id: string): Promise<any> {
+  //const itemCollection = collection(this.firestore, 'heroes');
+  //const docRef = doc(itemCollection, id);
+
+  //return new Promise((resolve, reject) => {
+  //getDoc(docRef).then((docSnap) => {
+  //if (docSnap.exists()) {
+  //console.log("Document data:", docSnap.data());
+  //resolve(docSnap.data());
+  //} else {
+  //console.log("No such document!");
+  //reject("No such document!");
+  //}
+  //}).catch((error) => {
+  //console.error("Error getting document:", error);
+  //reject(error);
+  //});
+  //});
+  //}
 
 
 }

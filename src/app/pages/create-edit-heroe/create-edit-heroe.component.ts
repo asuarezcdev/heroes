@@ -41,10 +41,10 @@ export class CreateEditHeroeComponent {
     this.heroeId = this.route.snapshot.paramMap.get('id');
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.heroesService.getHeroesFromLocalStorage();
     if (this.heroeId) {
-      const hero = this.heroesService.findHeroById(this.heroeId);
+      const hero = await this.heroesService.findHeroById(this.heroeId);
       this.heroesForm.patchValue({
         name: hero?.name,
         alias: hero?.alias,
@@ -105,7 +105,7 @@ export class CreateEditHeroeComponent {
   }
 
 
-    onFileSelected(event: any) {
+  onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       const fileType = file.type;
