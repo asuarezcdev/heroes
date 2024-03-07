@@ -63,6 +63,22 @@
     color : #9FA19D
 }
 
+.mat-icon-lg{
+    color: #F2C73F;
+}
+
+span{
+    color: #F2C73F;
+}
+
+.empty-box{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
 .button-box {
     display: flex;
     flex-direction: row;

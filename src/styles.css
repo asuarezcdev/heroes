@@ -7,8 +7,7 @@ html, body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-   background-color: #262626;
-   background-color: white
+    background-color: #262626;
 }
 
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
@@ -36,11 +35,11 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     background: #262626 !important;
 }
 
-.swal2-title{
+.swal2-title {
     color: white !important;
 }
 
-.swal2-html-container{
+.swal2-html-container {
     color: white !important;
 }
 

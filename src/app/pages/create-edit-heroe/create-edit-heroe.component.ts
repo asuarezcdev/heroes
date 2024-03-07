@@ -42,7 +42,6 @@ export class CreateEditHeroeComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.heroesService.getHeroesFromLocalStorage();
     if (this.heroeId) {
       const hero = await this.heroesService.findHeroById(this.heroeId);
       this.heroesForm.patchValue({

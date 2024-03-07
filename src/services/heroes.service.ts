@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import { Hero } from '../app/types/heroes';
-import { her } from './heroes';
 import { Firestore, collection, collectionData, getDoc } from '@angular/fire/firestore';
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 @Injectable({
@@ -21,40 +20,30 @@ export class HeroesService {
 
   }
 
-
-
-  // getHeroes(): void {
-  //return this.http.get('');
-  //}
-
-
   getHeroes(): void {
     const itemCollection = collection(this.firestore, 'heroes');
     collectionData(itemCollection).pipe(
       map((heroes: any[]) => heroes.map(hero => hero as Hero))
     ).subscribe(heroesArray => {
-      console.log('items', heroesArray);
       this.heroes.next(heroesArray);
-    });
+    })
   }
 
 
-  getHeroesFromLocalStorage(): void {
-    let storedHeroesList = localStorage.getItem('heroesList');
-    if (storedHeroesList && storedHeroesList !== 'undefined') {
-      this.heroesList = JSON.parse(storedHeroesList);
-    }
-    const listToUpdate = this.heroesList.length > 0 ? this.heroesList : her;
-    this.updateHeroesList(listToUpdate);
-  }
+  // getHeroesFromLocalStorage(): void {
+  //let storedHeroesList = localStorage.getItem('heroesList');
+  //if (storedHeroesList && storedHeroesList !== 'undefined') {
+  //this.heroesList = JSON.parse(storedHeroesList);
+  //}
+  //const listToUpdate = this.heroesList.length > 0 ? this.heroesList : her;
+  //this.updateHeroesList(listToUpdate);
+  //}
 
 
-
-
-  updateHeroesList(heroes: Hero[]): void {
-    this.heroes.next(heroes);
-    localStorage.setItem('heroesList', JSON.stringify(heroes));
-  }
+  //  updateHeroesList(heroes: Hero[]): void {
+  //this.heroes.next(heroes);
+  //localStorage.setItem('heroesList', JSON.stringify(heroes));
+  //}
 
   async editHero(heroToModify: Hero) {
     //    this.heroesList = this.getStoredHeroesList();
@@ -88,15 +77,15 @@ export class HeroesService {
     );
   }
 
-  getStoredHeroesList(): Hero[] {
-    const storedHeroesList = localStorage.getItem('heroesList');
-    return storedHeroesList ? JSON.parse(storedHeroesList) : [];
-  }
+  //getStoredHeroesList(): Hero[] {
+    //const storedHeroesList = localStorage.getItem('heroesList');
+    //return storedHeroesList ? JSON.parse(storedHeroesList) : [];
+  //}
 
-  updateAndStoreHeroes(heroes: Hero[]): void {
-    this.heroesList = heroes;
-    this.updateHeroesList(heroes);
-  }
+  //updateAndStoreHeroes(heroes: Hero[]): void {
+    //this.heroesList = heroes;
+    //this.updateHeroesList(heroes);
+  //}
 
   async findHeroById(id: string) {
     const itemCollection = collection(this.firestore, 'heroes');
