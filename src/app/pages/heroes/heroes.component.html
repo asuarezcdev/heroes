@@ -12,7 +12,12 @@
       </button>
       <mat-form-field class="example-full-width">
         <mat-label>Search hero...</mat-label>
-        <input (keyup)="search($event)" matInput type="text" #searchInput />
+        <input
+          matInput
+          type="text"
+          #searchInput
+          [(ngModel)]="searchTerm"
+        />
       </mat-form-field>
     </div>
   </div>
@@ -22,7 +27,7 @@
     <div class="spinner-container">
       <mat-spinner></mat-spinner>
     </div>
-    } @else { @for (heroe of heroes; track heroe.id) {
+    } @else { @for (heroe of users() | heroFilter: searchTerm; track heroe.id) {
     <mat-card class="card">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
@@ -30,8 +35,7 @@
         <mat-card-subtitle>{{ heroe.alias }}</mat-card-subtitle>
       </mat-card-header>
       <img class="heroe-photo" mat-card-image [src]="heroe?.image" />
-      <mat-card-content>
-      </mat-card-content>
+      <mat-card-content> </mat-card-content>
       <div class="button-box">
         <button
           class="action-button"
@@ -51,8 +55,10 @@
         </button>
       </div>
     </mat-card>
-    }@empty {
+    } @empty {
     <span>No results found...</span>
     } }
   </div>
 </div>
+
+<!-- <button (click)="loadPage(currentPage() + 1)"> Cargar más - Página {{currentPage()}}</button> -->
