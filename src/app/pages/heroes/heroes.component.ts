@@ -28,7 +28,6 @@ export class HeroesComponent {
   @NgModule({
     declarations: [HeroFilterPipe]
   })
-  originalHeroesList: Hero[] = [];
   searchTerm: string = '';
   isCreate: boolean = false;
   isLoading: boolean = true;
@@ -48,15 +47,12 @@ export class HeroesComponent {
     this.heroesService.getHeroes();
     this.heroesService.heroes$.subscribe({
       next: (res: Hero[]) => {
-        if (res.length > 0) {
-          this.heroes.set(res);
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        }
+        this.cdr.detectChanges();
+        this.heroes.set(res);
+        this.isLoading = false;
       }
     });
   }
-
 
   createOrEditHero(isCreate: boolean, id?: string): void {
     if (isCreate) {
@@ -72,6 +68,7 @@ export class HeroesComponent {
     dialogRef.componentInstance.confirmDelete.subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.heroesService.deleteHero(heroeId);
+        this.heroesService.getHeroes();
       } else {
         Swal.fire({
           icon: "error",

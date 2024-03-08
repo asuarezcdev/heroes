@@ -1,23 +1,50 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CreateEditHeroeComponent } from './create-edit-heroe.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeroesService } from '../../../services/heroes.service';
-import { FormControl } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { of } from 'rxjs';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { importProvidersFrom } from '@angular/core';
+import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 describe('CreateEditHeroeComponent', () => {
   let component: CreateEditHeroeComponent;
   let fixture: ComponentFixture<CreateEditHeroeComponent>;
   let heroesService: HeroesService;
   let router: Router;
+  let firestoreStub: any;
   beforeEach(async () => {
+    firestoreStub = {
+      collection: jasmine.createSpy().and.returnValue({
+        doc: jasmine.createSpy().and.returnValue({
+          set: jasmine.createSpy().and.returnValue(Promise.resolve()),
+          delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
+        }),
+        valueChanges: jasmine.createSpy().and.returnValue(of([{ id: '1', name: 'Hero One', alias: '', power: '', image: '' }])),
+      }),
+    };
 
     await TestBed.configureTestingModule({
       imports: [CreateEditHeroeComponent, RouterTestingModule, BrowserAnimationsModule],
-      providers: [HeroesService, Router]
+      providers: [HeroesService, Router,
+        { provide: Firestore, useValue: firestoreStub },
+        importProvidersFrom([
+          provideFirebaseApp(() => initializeApp(
+            {
+              apiKey: "AIzaSyAM9aTo0K0p3bqhBgPrvsJvuFPPdLRWWcg",
+              authDomain: "heroes-4dc58.firebaseapp.com",
+              projectId: "heroes-4dc58",
+              storageBucket: "heroes-4dc58.appspot.com",
+              messagingSenderId: "607787966902",
+              appId: "1:607787966902:web:fdfce8e304250c7ee76117"
+            }
+          )),
+          provideFirestore(() => getFirestore()),
+        ]),
+      ]
     })
       .compileComponents();
     heroesService = TestBed.inject(HeroesService);

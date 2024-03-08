@@ -7,9 +7,10 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-
+import { AngularFireModule } from '@angular/fire/compat';
 
 export const appConfig: ApplicationConfig = {
+ 
   providers: [provideRouter(routes), HeroesService,
   importProvidersFrom([
     provideFirebaseApp(() => initializeApp(
@@ -30,3 +31,4 @@ export const appConfig: ApplicationConfig = {
 };
 
 
+ 

@@ -44,12 +44,20 @@ export class CreateEditHeroeComponent {
   async ngOnInit(): Promise<void> {
     if (this.heroeId) {
       const hero = await this.heroesService.findHeroById(this.heroeId);
-      this.heroesForm.patchValue({
-        name: hero?.name,
-        alias: hero?.alias,
-        power: hero?.power,
-      });
-      this.image = hero?.image;
+      if (hero) {
+        this.heroesForm.patchValue({
+          name: hero?.name,
+          alias: hero?.alias,
+          power: hero?.power,
+        });
+        this.image = hero?.image;
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "This hero has not been found",
+        });
+      }
     }
   }
 
