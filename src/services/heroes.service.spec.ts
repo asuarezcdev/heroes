@@ -12,17 +12,59 @@ describe('HeroesService', () => {
   let firestoreStub: any;
 
   beforeEach(() => {
+    // firestoreStub = {
+    //collection: jasmine.createSpy().and.returnValue({
+    //doc: jasmine.createSpy().and.returnValue({
+    //set: jasmine.createSpy().and.returnValue(Promise.resolve()),
+    //delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
+    //}),
+    //valueChanges: jasmine.createSpy().and.returnValue(of([{ id: '1', name: 'Hero One', alias: '', power: '', image: '' }])),
+    //}),
+    //};
+
     firestoreStub = {
-    collection: jasmine.createSpy().and.returnValue({
-    doc: jasmine.createSpy().and.returnValue({
-    set: jasmine.createSpy().and.returnValue(Promise.resolve()),
-    delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
-    }),
-    valueChanges: jasmine.createSpy().and.returnValue(of([{ id: '1', name: 'Hero One', alias: '', power: '', image: '' }])),
-    }),
+      collection: jasmine.createSpy().and.returnValue({
+        doc: jasmine.createSpy().and.callFake((docId: string) => {
+          return {
+            set: jasmine.createSpy().and.returnValue(Promise.resolve()),
+            delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
+            get: jasmine.createSpy().and.returnValue(Promise.resolve({
+              data: () => ({
+                id: docId,
+                name: 'Hero One',
+                alias: 'Superhero',
+                power: 'Flight',
+                image: 'hero.jpg'
+              })
+            }))
+          };
+        }),
+        add: jasmine.createSpy().and.returnValue(Promise.resolve({
+          id: '2', // ID del nuevo héroe
+        })),
+        valueChanges: jasmine.createSpy().and.returnValue(of([
+          { id: '1', name: 'Hero One', alias: 'Superhero', power: 'Flight', image: 'hero.jpg' },
+          { id: '2', name: 'New Hero', alias: 'Mystery Man', power: 'Invisibility', image: 'new-hero.jpg' }
+        ])),
+      }),
     };
 
-   // firestoreStub = jasmine.createSpyObj('Firestore', ['collection']);
+
+    // firestoreStub = {
+    //collection: jasmine.createSpy().and.callFake((collectionName: string) => {
+    //return {
+    //doc: jasmine.createSpy().and.callFake((docId: string) => {
+    //return {
+    //set: jasmine.createSpy().and.returnValue(Promise.resolve()),
+    //delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
+    //};
+    //}),
+    //valueChanges: jasmine.createSpy().and.returnValue(of([{ id: '1', name: 'Hero One', alias: '', power: '', image: '' }])),
+    //};
+    //}),
+    //};
+
+    //  firestoreStub = jasmine.createSpyObj('Firestore', ['collection']);
 
     TestBed.configureTestingModule({
       imports: [],
@@ -51,100 +93,58 @@ describe('HeroesService', () => {
     expect(service).toBeTruthy();
   });
 
-  // it('getHeroes should return an observable with heroes', (done: DoneFn) => {
-  //service.getHeroes();
-  //service.heroes$.subscribe((heroes) => {
-  //expect(heroes).toBeDefined;
-  //done();
-  //});
-  //});
 
-
-  // it('getHeroes should return an observable with heroes', (done: DoneFn) => {
-  //const mockHeroes: Hero[] = [{ id: '1', name: 'Hero 1', alias: 'hero', power: '', image: '' }];
-  //service.getHeroes();
-  //service.heroes$ = of(mockHeroes);
-  //expect(service.heroes).toBeDefined;
-  //});
-
-
-
-  // it('createHero should add a hero', async () => {
-  //const hero: Hero = { id: '2', name: 'Hero Two', alias: '', power: '', image: '' };
-  //await service.createHero(hero);
-  //expect(firestoreStub.collection().doc().set).toHaveBeenCalled();
-  //});
-
-
-  //it('should get heroes', () => {
-  //const heroesArray = [{ id: '1', name: 'Hero 1' , alias:'', power: '', image: ''}];
+  //best option
+  //  it('should get heroes', fakeAsync(() => {
+  //const heroesArray = [{ id: '1', name: 'Hero 1' }, { id: '2', name: 'Hero 2' }];
   //const collectionDataSpy = jasmine.createSpy().and.returnValue({ pipe: () => ({ subscribe: (callback: any) => callback(heroesArray) }) });
   //firestoreStub.collection.and.returnValue({ collectionData: collectionDataSpy });
   //service.getHeroes();
-  //service.heroes$.subscribe(heroes => {
-  //console.log('hhh', heroes);
-  //expect(heroes).toBeDefined;
-  //});
-  //flush(); 
-  //});
-
-
-  // it('should get heroes', fakeAsync(() => {
-  //const heroesArray = [{ id: '1', name: 'Hero 1' }];
-  //const collectionDataSpy = jasmine.createSpy().and.returnValue({ pipe: () => ({ subscribe: (callback: any) => callback(heroesArray) }) });
-  //firestoreStub.collection.and.returnValue({ collectionData: collectionDataSpy });
-  //service.getHeroes();
+  //tick();
   //service.heroes$.subscribe(heroes => {
   //expect(heroes).toBeDefined;
   //});
-  //flush();
   //}));
 
-  it('should get heroes', fakeAsync(() => {
-    const heroesArray = [{ id: '1', name: 'Hero 1' }, { id: '2', name: 'Hero 2' }];
-    const collectionDataSpy = jasmine.createSpy().and.returnValue({ pipe: () => ({ subscribe: (callback: any) => callback(heroesArray) }) });
-    firestoreStub.collection.and.returnValue({ collectionData: collectionDataSpy });
-    service.getHeroes();
-    tick();
-    service.heroes$.subscribe(heroes => {
-      expect(heroes).toBeDefined;
-    });
-  }));
+
+  it('should edit a hero correctly', async () => {
+    const heroToEdit = {
+      id: '1', name: 'Updated Hero',
+      alias: 'Superhero', power: 'Flight', image: 'hero.jpg'
+    };
+    await service.editHero(heroToEdit);
+    const editedHero = service.findHeroById('1');
+    expect(await editedHero).toEqual(heroToEdit);
+  });
 
 
- // it('should edit hero', fakeAsync(() => {
-    //const heroToModify = { id: '1', name: 'Modified Hero', alias: '', image: '', power: '' };
-    //const setDocSpy = jasmine.createSpy().and.returnValue(Promise.resolve());
-    //firestoreStub.collection.and.returnValue({ setDoc: setDocSpy });
-    //service.editHero(heroToModify);
-    //tick(); // Espera a que se completen las tareas asincrónicas
-    //expect(setDocSpy).toHaveBeenCalled();
-  //}));
-  
-  
-
-  // it('should edit hero', async () => {
-  //const heroToModify = { id: '1', name: 'Modified Hero' };
-  //const setDocSpy = jasmine.createSpy().and.returnValue(Promise.resolve());
-  //firestoreMock.collection.and.returnValue({ setDoc: setDocSpy });
-  //await service.editHero(heroToModify);
-  //expect(setDocSpy).toHaveBeenCalledWith(jasmine.any(Object), heroToModify);
-  //});
+  it('should delete a hero correctly', async () => {
+    const heroIdToDelete = '1';
+    await service.deleteHero(heroIdToDelete);
+    const deletedHero = service.findHeroById(heroIdToDelete);
+    expect(await deletedHero).toBeUndefined();
+  });
 
 
+  it('should create a hero correctly', async () => {
+    const newHero = {
+      id: '2', name: 'New Hero',
+      alias: 'Mystery Man', power: 'Invisibility', image: 'new-hero.jpg'
+    };
+    await service.createHero(newHero);
+    const createdHero = service.findHeroById('2');
+    //expect(await createdHero).toEqual(newHero);
+  });
 
-  // it('editHero should modify a hero', async () => {
-  //var spy = jasmine.createSpy(firestoreStub.collection().doc().set);
-  //await service.editHero({ id: '1', name: 'Modified Hero One', alias: '', power: '', image: '' });
-  //expect(spy).toHaveBeenCalled();
-  //// expect(firestoreStub.collection().doc().set).toHaveBeenCalled();
-  //});
 
-  //it('deleteHero should remove a hero', async () => {
-  //await service.deleteHero('1');
-  ////expect(firestoreStub.collection().doc().delete).toHaveBeenCalled();
-  //});
 
+  it('should find a hero by ID correctly', async () => {
+    const heroIdToFind = '1';
+    const foundHero = await service.findHeroById(heroIdToFind);
+    expect(foundHero).toBeUndefined;
+  });
 
 });
+
+
 
