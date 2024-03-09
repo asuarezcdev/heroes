@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { Hero } from '../app/types/heroes';
+import { Hero } from '../models/heroes.inteface';
 import { Firestore, collection, collectionData, getDoc } from '@angular/fire/firestore';
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 @Injectable({

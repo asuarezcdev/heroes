@@ -5,7 +5,7 @@ import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firesto
 import { of } from 'rxjs';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { importProvidersFrom } from '@angular/core';
-import { Hero } from '../app/types/heroes';
+import { Hero } from '../models/heroes.inteface';
 
 describe('HeroesService', () => {
   let service: HeroesService;

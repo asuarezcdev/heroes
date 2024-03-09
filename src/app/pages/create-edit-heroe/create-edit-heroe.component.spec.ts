@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CreateEditHeroeComponent } from './create-edit-heroe.component';
 import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeroesService } from '../../../services/heroes.service';
+import { HeroesService } from '../../../core/services/heroes.service';
 import Swal from 'sweetalert2';
 import { of } from 'rxjs';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';

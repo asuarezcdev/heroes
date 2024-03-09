@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Hero } from '../types/heroes';
+import { Hero } from '../../core/models/heroes.inteface';
 
 @Pipe({
   name: 'heroFilter',

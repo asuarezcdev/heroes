@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { HttpClient } from '@angular/common/http';
 import { SafeUrl } from '@angular/platform-browser';
-import { HeroesService } from '../../../services/heroes.service';
+import { HeroesService } from '../../../core/services/heroes.service';
 import Swal from 'sweetalert2';
 
 @Component({

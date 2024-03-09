@@ -1,5 +1,3 @@
-import { SafeUrl } from "@angular/platform-browser";
-
 export interface Hero {
     name: string,
     alias: string,

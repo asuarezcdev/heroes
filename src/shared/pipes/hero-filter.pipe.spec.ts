@@ -1,4 +1,4 @@
-import { Hero } from '../types/heroes';
+import { Hero } from '../../core/models/heroes.inteface';
 import { HeroFilterPipe } from './hero-filter.pipe';
 
 describe('HeroFilterPipe', () => {

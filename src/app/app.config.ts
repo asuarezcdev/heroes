@@ -1,16 +1,14 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HeroesService } from '../services/heroes.service';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { HeroesService } from '../core/services/heroes.service';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { AngularFireModule } from '@angular/fire/compat';
 
 export const appConfig: ApplicationConfig = {
- 
+
   providers: [provideRouter(routes), HeroesService,
   importProvidersFrom([
     provideFirebaseApp(() => initializeApp(
@@ -31,4 +29,3 @@ export const appConfig: ApplicationConfig = {
 };
 
 
- 

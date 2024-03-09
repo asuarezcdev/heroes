@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, NgModule, signal, ChangeDetectorRef
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { HeroesService } from '../../../services/heroes.service';
+import { HeroesService } from '../../../core/services/heroes.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterOutlet } from '@angular/router';
-import { Hero } from '../../types/heroes';
+import { Hero } from '../../../core/models/heroes.inteface';
 import Swal from 'sweetalert2';
-import { HeroFilterPipe } from '../../pipes/hero-filter.pipe';
+import { HeroFilterPipe } from '../../../shared/pipes/hero-filter.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 

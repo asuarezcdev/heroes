@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from '../core/header/header.component';
+import { HeaderComponent } from './layouts/header/header.component';
 import { SharedModule } from '../shared/shared.module';
 import { HeroesComponent } from './pages/heroes/heroes.component';
-import { HeroesService } from '../services/heroes.service';
+import { HeroesService } from '../core/services/heroes.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
