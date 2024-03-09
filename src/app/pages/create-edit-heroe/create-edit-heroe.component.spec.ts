@@ -71,6 +71,7 @@ describe('CreateEditHeroeComponent', () => {
     component.image = 'superman.jpg';
     component.isCreate = true;
     component.submitForm();
+    expect(component.image).toBeDefined();
   });
 
   it('should navigate to root path when cancel is called', () => {

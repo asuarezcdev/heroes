@@ -18,7 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-heroes',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SharedModule, MatTooltipModule, HeroFilterPipe, FormsModule, MatCardModule, MatDialogModule,MatProgressSpinnerModule, RouterOutlet],
+  imports: [SharedModule, MatTooltipModule, HeroFilterPipe, FormsModule, MatCardModule, MatDialogModule, MatProgressSpinnerModule, RouterOutlet],
   providers: [HeroesService, HttpClient],
   templateUrl: './heroes.component.html',
   styleUrl: './heroes.component.css'
@@ -30,7 +30,7 @@ export class HeroesComponent {
   searchTerm: string = '';
   isCreate: boolean = false;
   isLoading: boolean = true;
-  heroes = signal<Hero[]>([]);
+  heroes = signal<any[]>([]);
   constructor(private heroesService: HeroesService,
     private dialog: MatDialog,
     private router: Router,
@@ -48,9 +48,9 @@ export class HeroesComponent {
       next: (res: Hero[]) => {
         this.heroes.set(res);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
-    this.cdr.detectChanges();
   }
 
   createOrEditHero(isCreate: boolean, id?: string): void {

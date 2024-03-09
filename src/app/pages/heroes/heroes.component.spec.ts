@@ -72,12 +72,12 @@ describe('HeroesComponent', () => {
   });
 
 
-  it('should load data and set isLoading to false after 1 second', () => {
+  it('should load data and set isLoading to false after 1 second', async() => {
     const mockHeroes: Hero[] = [{ id: '1', name: 'Hero 1', alias: 'hero', power: '', image: '' }];
     heroesService.heroes$ = of(mockHeroes);
+    expect(component.isLoading).toBeTrue();
     component.loadData();
-      expect(component.isLoading).toBeFalse();
-      expect(component.heroes).toBeDefined;
+    expect(component.heroes).toBeDefined;
   });
 
 

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { Subject, map } from 'rxjs';
 import { Hero } from '../models/heroes.inteface';
 import { Firestore, collection, collectionData, getDoc } from '@angular/fire/firestore';
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
@@ -8,12 +8,9 @@ import { doc, setDoc, deleteDoc } from "firebase/firestore";
 })
 export class HeroesService {
   firestore: Firestore = inject(Firestore);
-  public heroes = new BehaviorSubject<Hero[]>([]);
+  public heroes = new Subject<Hero[]>();
   heroes$ = this.heroes.asObservable();
-  private isLoading = new BehaviorSubject<boolean>(true);
-  isLoading$ = this.isLoading.asObservable();
   heroesList: Hero[] = [];
-  
   constructor() {
 
   }
@@ -22,8 +19,8 @@ export class HeroesService {
     const itemCollection = collection(this.firestore, 'heroes');
     collectionData(itemCollection).pipe(
       map((heroes: any[]) => heroes.map(hero => hero as Hero))
-    ).subscribe(heroesArray => {
-      this.heroes.next(heroesArray);
+    ).subscribe(heroesResponse => {
+      this.heroes.next(heroesResponse);
     })
   }
 
