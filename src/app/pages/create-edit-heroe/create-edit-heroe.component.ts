@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validatio
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { SafeUrl } from '@angular/platform-browser';
 import { HeroesService } from '../../../services/heroes.service';
 import Swal from 'sweetalert2';
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-create-edit-heroe',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, ReactiveFormsModule, SharedModule, HttpClientModule],
+  imports: [CommonModule, MatButtonModule, ReactiveFormsModule, SharedModule],
   providers: [HttpClient, HeroesService],
   templateUrl: './create-edit-heroe.component.html',
   styleUrl: './create-edit-heroe.component.css'

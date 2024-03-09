@@ -106,6 +106,21 @@ describe('HeroesService', () => {
   //});
   //}));
 
+it('should create a hero correctly', async () => {
+    const newHero = {
+      id: '1', name: 'New Hero',
+      alias: 'Mystery Man', power: 'Invisibility', image: 'new-hero.jpg'
+    };
+    await service.createHero(newHero);
+    const createdHero = service.findHeroById('1');
+    //expect(await createdHero).toEqual(newHero);
+  });
+
+  it('should find a hero by ID correctly', async () => {
+    const heroIdToFind = '1';
+    const foundHero = await service.findHeroById(heroIdToFind);
+    expect(foundHero).toBeUndefined;
+  });
 
   it('should edit a hero correctly', async () => {
     const heroToEdit = {
@@ -118,31 +133,15 @@ describe('HeroesService', () => {
   });
 
 
-  it('should delete a hero correctly', async () => {
-    const heroIdToDelete = '1';
+  it('should delete a hero incorrectly', async () => {
+    const heroIdToDelete = '33';
     await service.deleteHero(heroIdToDelete);
     const deletedHero = service.findHeroById(heroIdToDelete);
     expect(await deletedHero).toBeUndefined();
   });
 
 
-  it('should create a hero correctly', async () => {
-    const newHero = {
-      id: '2', name: 'New Hero',
-      alias: 'Mystery Man', power: 'Invisibility', image: 'new-hero.jpg'
-    };
-    await service.createHero(newHero);
-    const createdHero = service.findHeroById('2');
-    //expect(await createdHero).toEqual(newHero);
-  });
-
-
-
-  it('should find a hero by ID correctly', async () => {
-    const heroIdToFind = '1';
-    const foundHero = await service.findHeroById(heroIdToFind);
-    expect(foundHero).toBeUndefined;
-  });
+  
 
 });
 

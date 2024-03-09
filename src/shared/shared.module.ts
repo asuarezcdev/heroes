@@ -6,13 +6,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { HeroFilterPipe } from '../app/pipes/hero-filter.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
     ],
     imports: [
         CommonModule,
+        HttpClientModule,
         MatButtonModule,
         MatIconModule,
         MatToolbarModule,
@@ -22,6 +23,7 @@ import { HeroFilterPipe } from '../app/pipes/hero-filter.pipe';
     ],
     exports: [
         CommonModule,
+        HttpClientModule,
         MatButtonModule,
         MatIconModule,
         MatToolbarModule,
