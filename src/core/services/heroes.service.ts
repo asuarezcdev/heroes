@@ -7,14 +7,13 @@ import { doc, setDoc, deleteDoc } from "firebase/firestore";
   providedIn: 'root'
 })
 export class HeroesService {
-
-  item$!: Observable<any[]>;
   firestore: Firestore = inject(Firestore);
   public heroes = new BehaviorSubject<Hero[]>([]);
   heroes$ = this.heroes.asObservable();
   private isLoading = new BehaviorSubject<boolean>(true);
   isLoading$ = this.isLoading.asObservable();
   heroesList: Hero[] = [];
+  
   constructor() {
 
   }
