@@ -25,10 +25,17 @@
 }
 
 
+
 .fixed-size-image {
-    height: 200px;
+    object-fit: contain;
+    width: 100%;
+    height: 300px;
+    display: block;
+    margin: auto;
+    background-color: white;
     margin-bottom: 8%;
 }
+
 
 .text-photo {
     color: white;
@@ -50,4 +57,3 @@ h2 {
 .cancel-button {
     background-color: #F2C73F;
 }
-

@@ -3,34 +3,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HeroesComponent } from './heroes.component';
 import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { HeroesService } from '../../../core/services/heroes.service';
 import { of } from 'rxjs';
 import { Hero } from '../../../core/models/heroes.inteface';
-import * as AngularFireFirestore from '@angular/fire/firestore';
 import { FirebaseAppModule, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { Firestore, collection, collectionData, getDoc, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { importProvidersFrom } from '@angular/core';
 
 describe('HeroesComponent', () => {
   let component: HeroesComponent;
   let fixture: ComponentFixture<HeroesComponent>;
   let router: Router;
-  let dialog: MatDialog;
   let heroesService: HeroesService;
   let firestoreStub: any;
 
-  firestoreStub = {
-    collection: jasmine.createSpy().and.returnValue({
-      doc: jasmine.createSpy().and.returnValue({
-        set: jasmine.createSpy().and.returnValue(Promise.resolve()),
-        delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
-      }),
-      valueChanges: jasmine.createSpy().and.returnValue(of([{ id: '1', name: 'Hero One', alias: '', power: '', image: '' }])),
-    }),
-  };
-
+  
   beforeEach(async () => {
+    firestoreStub = jasmine.createSpyObj('Firestore', ['collection']);
     await TestBed.configureTestingModule({
       imports: [HeroesComponent, RouterTestingModule, BrowserAnimationsModule, FirebaseAppModule],
       providers: [Router, HeroesService,
@@ -52,7 +42,6 @@ describe('HeroesComponent', () => {
     })
       .compileComponents();
     router = TestBed.inject(Router);
-    dialog = TestBed.inject(MatDialog);
     heroesService = TestBed.inject(HeroesService);
     spyOn(router, 'navigate');
     fixture = TestBed.createComponent(HeroesComponent);
@@ -72,8 +61,8 @@ describe('HeroesComponent', () => {
   });
 
 
-  it('should load data and set isLoading to false after 1 second', async() => {
-    const mockHeroes: Hero[] = [{ id: '1', name: 'Hero 1', alias: 'hero', power: '', image: '' }];
+  it('should load data and set isLoading to false after 1 second', async () => {
+    const mockHeroes: Hero[] = [{ id: '1', name: 'Hero 1', alias: 'hero', power: '', image: 'https://i.ibb.co/8Mf4NXg/Screenshot-11.png' }];
     heroesService.heroes$ = of(mockHeroes);
     expect(component.isLoading).toBeTrue();
     component.loadData();

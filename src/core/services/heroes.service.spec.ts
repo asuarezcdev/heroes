@@ -48,7 +48,7 @@ describe('HeroesService', () => {
   it('should create and find a hero correctly', async () => {
     const newHero = {
       id: '1', name: 'New Hero ONE',
-      alias: 'Mystery Man', power: 'Invisibility', image: 'new-hero.jpg'
+      alias: 'Mystery Man', power: 'Invisibility', image: 'https://i.ibb.co/8Mf4NXg/Screenshot-11.png'
     };
     await service.createHero(newHero);
     const createdHero = service.findHeroById('1');
@@ -59,7 +59,7 @@ describe('HeroesService', () => {
   it('should edit a hero correctly', async () => {
     const heroToEdit = {
       id: '1', name: 'Updated Hero',
-      alias: 'Superhero', power: 'Flight', image: 'hero.jpg'
+      alias: 'Superhero', power: 'Flight', image: 'https://i.ibb.co/8Mf4NXg/Screenshot-11.png'
     };
     await service.editHero(heroToEdit);
     const editedHero = service.findHeroById('1');
@@ -70,7 +70,7 @@ describe('HeroesService', () => {
   it("should delete a new hero created correctly and then it can't be found", async () => {
     const newHeroToDelete = {
       id: '27', name: 'New Hero to Delete',
-      alias: 'Batman', power: 'Strong', image: 'new-hero-delete.jpg'
+      alias: 'Batman', power: 'Strong', image: 'https://i.ibb.co/8Mf4NXg/Screenshot-11.png'
     };
     await service.createHero(newHeroToDelete);
     const heroIdToDelete = '27';

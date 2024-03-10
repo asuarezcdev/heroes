@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeroesService } from '../../../core/services/heroes.service';
 import Swal from 'sweetalert2';
-import { of } from 'rxjs';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { importProvidersFrom } from '@angular/core';
 import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -13,20 +12,10 @@ import { Firestore, getFirestore, provideFirestore } from '@angular/fire/firesto
 describe('CreateEditHeroeComponent', () => {
   let component: CreateEditHeroeComponent;
   let fixture: ComponentFixture<CreateEditHeroeComponent>;
-  let heroesService: HeroesService;
   let router: Router;
   let firestoreStub: any;
   beforeEach(async () => {
-    firestoreStub = {
-      collection: jasmine.createSpy().and.returnValue({
-        doc: jasmine.createSpy().and.returnValue({
-          set: jasmine.createSpy().and.returnValue(Promise.resolve()),
-          delete: jasmine.createSpy().and.returnValue(Promise.resolve()),
-        }),
-        valueChanges: jasmine.createSpy().and.returnValue(of([{ id: '1', name: 'Hero One', alias: '', power: '', image: '' }])),
-      }),
-    };
-
+    firestoreStub = jasmine.createSpyObj('Firestore', ['collection']);
     await TestBed.configureTestingModule({
       imports: [CreateEditHeroeComponent, RouterTestingModule, BrowserAnimationsModule],
       providers: [HeroesService, Router,
@@ -47,7 +36,6 @@ describe('CreateEditHeroeComponent', () => {
       ]
     })
       .compileComponents();
-    heroesService = TestBed.inject(HeroesService);
     router = TestBed.inject(Router);
     fixture = TestBed.createComponent(CreateEditHeroeComponent);
     component = fixture.componentInstance;
@@ -67,8 +55,8 @@ describe('CreateEditHeroeComponent', () => {
 
 
   it('should create hero if form is valid and image is set', () => {
-    component.heroesForm.setValue({ name: 'Superman', alias: 'Clark Kent', power: 'Flight' });
-    component.image = 'superman.jpg';
+    component.heroesForm.setValue({ name: 'Superman', alias: 'Clark Kent', power: 'Flight'});
+    component.image = 'https://i.ibb.co/8Mf4NXg/Screenshot-11.png';
     component.isCreate = true;
     component.submitForm();
     expect(component.image).toBeDefined();
