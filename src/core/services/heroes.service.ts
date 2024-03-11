@@ -39,7 +39,6 @@ export class HeroesService {
 
 
   async createHero(newHero: Hero) {
-    console.log('NEW', newHero);
     const newId = (Math.floor(Math.random() * 1000) + 1).toString();
     newHero.id = newId;
     const itemCollection = collection(this.firestore, 'heroes');
